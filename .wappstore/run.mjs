@@ -43,13 +43,35 @@ async function main() {
   log(`  站点连通性：HTTP ${conn.status}`)
   if (conn.status !== 200) throw new Error(`站点不可达：HTTP ${conn.status} ${conn.text}`)
 
-  const login = await call('POST', '/api/auth/login', { username: 'admin', password: PASSWORD })
-  if (login.status !== 200 || !login.json || !login.json.ok) {
-    throw new Error(`登录失败：HTTP ${login.status} ${JSON.stringify(login.json || login.text).slice(0, 200)}`)
+  // —— 诊断：确认 Secret 是否原样送达（只记录长度与哈希前缀，不泄露值）——
+  const { createHash } = await import('node:crypto')
+  result.passwordDiag = {
+    length: PASSWORD.length,
+    sha256_12: createHash('sha256').update(PASSWORD, 'utf8').digest('hex').slice(0, 12),
+    hasWhitespace: /\s/.test(PASSWORD),
+    hasQuotes: /["']/.test(PASSWORD),
+  }
+  log(`  密码诊断：长度=${result.passwordDiag.length} sha256前12=${result.passwordDiag.sha256_12} 含空白=${result.passwordDiag.hasWhitespace} 含引号=${result.passwordDiag.hasQuotes}`)
+
+  // —— 尝试多个可能的账号名 ——
+  const candidates = ['admin', 'ai', 'administrator']
+  let login = null
+  let usedUser = ''
+  for (const u of candidates) {
+    const r = await call('POST', '/api/auth/login', { username: u, password: PASSWORD })
+    result.loginAttempts = result.loginAttempts || []
+    result.loginAttempts.push({ username: u, status: r.status, ok: !!(r.json && r.json.ok), error: r.json && r.json.error })
+    log(`  尝试账号 ${u} → HTTP ${r.status} ${(r.json && (r.json.error || (r.json.ok ? 'ok' : ''))) || ''}`)
+    if (r.status === 200 && r.json && r.json.ok) { login = r; usedUser = u; break }
+    login = r
+  }
+  if (!login || login.status !== 200 || !login.json || !login.json.ok) {
+    throw new Error(`登录失败：HTTP ${login && login.status} ${JSON.stringify((login && (login.json || login.text)) || '').slice(0, 200)}`)
   }
   const token = login.json.token
-  log('✓ 已登录 admin（scope=ai）')
+  log(`✓ 已登录 ${usedUser}（scope=ai）`)
   result.login = 'ok'
+  result.loginUser = usedUser
 
   const listRes = await call('GET', '/api/admin/apps', null, token)
   const apps = (listRes.json && (listRes.json.apps || [])) || []
