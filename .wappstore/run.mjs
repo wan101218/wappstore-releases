@@ -42,6 +42,8 @@ async function main() {
   const conn = await call('GET', '/api/config')
   log(`  站点连通性：HTTP ${conn.status}`)
   if (conn.status !== 200) throw new Error(`站点不可达：HTTP ${conn.status} ${conn.text}`)
+  result.siteConfig = conn.json || conn.text
+  log('  站点配置：' + JSON.stringify(conn.json || conn.text).slice(0, 500))
 
   // —— 诊断：确认 Secret 是否原样送达（只记录长度与哈希前缀，不泄露值）——
   const { createHash } = await import('node:crypto')
@@ -54,7 +56,7 @@ async function main() {
   log(`  密码诊断：长度=${result.passwordDiag.length} sha256前12=${result.passwordDiag.sha256_12} 含空白=${result.passwordDiag.hasWhitespace} 含引号=${result.passwordDiag.hasQuotes}`)
 
   // —— 尝试多个可能的账号名 ——
-  const candidates = ['admin', 'ai', 'administrator']
+  const candidates = ['admin', 'ai', 'administrator', 'wan101218', 'dev', 'Admin', 'ADMIN', 'root']
   let login = null
   let usedUser = ''
   for (const u of candidates) {
