@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-10-02T13:16:55.182Z",
+  "startedAt": "2026-10-02T13:17:24.084Z",
   "api": "https://wappstore.wpr101218.workers.dev",
   "dryRun": false,
   "jobs": [],
@@ -49,5 +49,6 @@
     }
   ],
   "error": "登录失败：admin 与开发者端都无法登录（详见 loginAttempts）",
-  "finishedAt": "2026-10-02T13:16:56.469Z"
+  "jobTriggeredAt": "2026-10-02T13:17:10.168Z",
+  "finishedAt": "2026-10-02T13:17:25.077Z"
 }
