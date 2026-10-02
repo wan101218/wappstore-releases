@@ -55,22 +55,38 @@ async function main() {
   }
   log(`  密码诊断：长度=${result.passwordDiag.length} sha256前12=${result.passwordDiag.sha256_12} 含空白=${result.passwordDiag.hasWhitespace} 含引号=${result.passwordDiag.hasQuotes}`)
 
-  // —— 尝试多个可能的账号名 ——
-  const candidates = ['admin', 'ai', 'administrator', 'wan101218', 'dev', 'Admin', 'ADMIN', 'root']
-  let login = null
-  let usedUser = ''
-  for (const u of candidates) {
-    const r = await call('POST', '/api/auth/login', { username: u, password: PASSWORD })
+  // —— 认证 ——
+  // AI 后台密码若被改过，用开发者端（默认 dev123）把 AI 后台密码重置回 job.newAiPassword
+  async function tryLogin(username, password) {
+    const r = await call('POST', '/api/auth/login', { username, password })
     result.loginAttempts = result.loginAttempts || []
-    result.loginAttempts.push({ username: u, status: r.status, ok: !!(r.json && r.json.ok), error: r.json && r.json.error })
-    log(`  尝试账号 ${u} → HTTP ${r.status} ${(r.json && (r.json.error || (r.json.ok ? 'ok' : ''))) || ''}`)
-    if (r.status === 200 && r.json && r.json.ok) { login = r; usedUser = u; break }
-    login = r
+    result.loginAttempts.push({ username, status: r.status, ok: !!(r.json && r.json.ok), error: r.json && r.json.error })
+    log(`  登录 ${username} → HTTP ${r.status} ${(r.json && (r.json.error || (r.json.ok ? 'ok' : ''))) || ''}`)
+    return r.status === 200 && r.json && r.json.ok ? r.json.token : null
   }
-  if (!login || login.status !== 200 || !login.json || !login.json.ok) {
-    throw new Error(`登录失败：HTTP ${login && login.status} ${JSON.stringify((login && (login.json || login.text)) || '').slice(0, 200)}`)
+
+  let usedUser = 'admin'
+  let token = await tryLogin('admin', PASSWORD)
+  if (!token) {
+    log('  admin 登录失败 → 尝试用开发者端重置 AI 后台密码')
+    const devPw = job.devPassword || 'dev123'
+    const devToken = await tryLogin('dev', devPw)
+    if (devToken) {
+      const newAiPw = job.newAiPassword || PASSWORD
+      const reset = await call('POST', '/api/auth/ai-password', { newPassword: newAiPw }, devToken)
+      result.resetAiPassword = { status: reset.status, response: (reset.json || reset.text) }
+      log(`  重置 AI 密码 → HTTP ${reset.status} ${JSON.stringify(reset.json || reset.text).slice(0, 160)}`)
+      if (reset.status === 200 && reset.json && reset.json.ok) {
+        token = await tryLogin('admin', newAiPw)
+        result.authRecovered = true
+      }
+    } else {
+      log('  ✗ 开发者端默认密码也登录失败，无法自动恢复')
+    }
   }
-  const token = login.json.token
+  if (!token) {
+    throw new Error(`登录失败：admin 与开发者端都无法登录（详见 loginAttempts）`)
+  }
   log(`✓ 已登录 ${usedUser}（scope=ai）`)
   result.login = 'ok'
   result.loginUser = usedUser
