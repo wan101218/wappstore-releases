@@ -1,0 +1,32 @@
+name: WAPPSTORE API Relay
+
+# 用途：GitHub Actions 运行环境在境外，可正常访问 workers.dev 域名。
+# 通过提交 .wappstore/job.json 触发本工作流，在云端调用 WAPPSTORE 后台 API，
+# 结果写回 .wappstore/last-result.json（仓库私有数据不含密钥，密码走 Secrets）。
+on:
+  push:
+    paths:
+      - '.wappstore/job.json'
+
+permissions:
+  contents: write
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Call WAPPSTORE API
+        env:
+          WAPPS_PASSWORD: ${{ secrets.WAPPS_ADMIN_PASSWORD }}
+        run: node .wappstore/run.mjs
+
+      - name: Commit result
+        if: always()
+        run: |
+          git config user.name "wappstore-relay"
+          git config user.email "wappstore-relay@users.noreply.github.com"
+          git add .wappstore/last-result.json || true
+          git commit -m "relay result $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "no changes"
+          git push || echo "push failed"
