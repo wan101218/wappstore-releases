@@ -162,6 +162,7 @@ try {
   result.error = String(e.message || e)
   log('ERR: ' + result.error)
 }
+result.jobTriggeredAt = job.triggeredAt || ''
 result.finishedAt = new Date().toISOString()
 writeFileSync(RESULT_PATH, JSON.stringify(result, null, 2), 'utf8')
 console.log('result written to ' + RESULT_PATH)
