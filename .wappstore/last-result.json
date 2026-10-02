@@ -1,9 +1,33 @@
 {
-  "startedAt": "2026-10-02T01:44:38.833Z",
+  "startedAt": "2026-10-02T13:15:49.281Z",
   "api": "https://wappstore.wpr101218.workers.dev",
   "dryRun": false,
   "jobs": [],
   "ok": false,
+  "siteConfig": {
+    "ok": true,
+    "config": {
+      "siteName": "WAPPSTORE 应用商店",
+      "siteSubtitle": "更纯粹的应用分发平台",
+      "keywords": "应用商店,APK下载,软件下载",
+      "heroTitle": "发现你的下一款应用",
+      "heroSubtitle": "精选优质应用，安全、快速、无捆绑下载",
+      "announcement": "欢迎使用 WAPPSTORE，所有应用均经过人工审核。",
+      "contact": "",
+      "icp": "",
+      "downloadTip": "请使用手机浏览器打开本页面下载安装包",
+      "categories": [
+        "推荐",
+        "应用",
+        "游戏",
+        "工具",
+        "影音",
+        "社交",
+        "效率"
+      ],
+      "footerNote": "WAPPSTORE © 2026"
+    }
+  },
   "passwordDiag": {
     "length": 16,
     "sha256_12": "d3d727ac8c2c",
@@ -28,8 +52,38 @@
       "status": 401,
       "ok": false,
       "error": "账号或密码错误"
+    },
+    {
+      "username": "wan101218",
+      "status": 401,
+      "ok": false,
+      "error": "账号或密码错误"
+    },
+    {
+      "username": "dev",
+      "status": 401,
+      "ok": false,
+      "error": "账号或密码错误"
+    },
+    {
+      "username": "Admin",
+      "status": 401,
+      "ok": false,
+      "error": "账号或密码错误"
+    },
+    {
+      "username": "ADMIN",
+      "status": 401,
+      "ok": false,
+      "error": "账号或密码错误"
+    },
+    {
+      "username": "root",
+      "status": 401,
+      "ok": false,
+      "error": "账号或密码错误"
     }
   ],
   "error": "登录失败：HTTP 401 {\"ok\":false,\"error\":\"账号或密码错误\"}",
-  "finishedAt": "2026-10-02T01:44:39.442Z"
+  "finishedAt": "2026-10-02T13:15:51.512Z"
 }
