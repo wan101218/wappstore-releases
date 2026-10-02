@@ -1,0 +1,9 @@
+{
+  "startedAt": "2026-10-02T01:23:12.110Z",
+  "api": "https://wappstore.wpr101218.workers.dev",
+  "dryRun": false,
+  "jobs": [],
+  "ok": false,
+  "error": "登录失败：HTTP 401 {\"ok\":false,\"error\":\"账号或密码错误\"}",
+  "finishedAt": "2026-10-02T01:23:13.206Z"
+}
