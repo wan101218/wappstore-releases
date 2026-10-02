@@ -1,49 +1,6 @@
 {
   "api": "https://wappstore.wpr101218.workers.dev",
-  "triggeredAt": "2026-10-02T13:59:35.260Z",
-  "note": "Kith v1.1.0 发布（由本机通过 Actions 中转到 WAPPSTORE 后台）",
-  "jobs": [
-    {
-      "action": "publish-app",
-      "payload": {
-        "name": "Kith",
-        "packageName": "com.kith.app",
-        "icon": "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-icon-512.png",
-        "category": "应用",
-        "summary": "造一个社会，看它自己活起来。设定世界观和初始人物，AI 角色会自己结盟、翻脸、谈恋爱，而你只是被拉进群的那个人。",
-        "description": "Kith 是一款 AI 群像社会模拟器。你只负责设定世界观和几个初始人物，剩下的交给旁白引擎和各自独立的人物智能体——他们会自己推进剧情、改变关系。你可以在群里说话，也可以退到上帝视角，直接扮演任意一个角色。\n\n【它怎么玩】\n· 旁白引擎：每推进一次剧情，可能创造新人物、改写关系、埋下伏笔。关系对齐做了三级解析（id → 姓名 → 接不上就丢弃），宁可少几条关系，也不会生成连不上的孤儿节点。\n· 独立人物智能体：每个角色有人格卡，15 种内置关系（恋人、暧昧、宿敌、债主……）驱动语气和行为。角色之间消息闭塞——你在 A 面前说的话，B 不知道。\n· Human Chat Protocol：角色消息里可以夹带表情包、AI 生成的图片和模拟转账；流式输出有标签截断保护，不会把半个标签吐到屏幕上。转账纯属模拟，没有真实资金流动。\n· 上帝视角：可以查看关系图谱，也能随时附身任意 NPC，直接以他的身份去和别人私聊。\n\n【模型由你自己定】\n应用本身不提供任何模型服务，也不内置 Key。内置 256 个模型、42 家厂商接入点预设；配好你自己的 API Key 后，旁白会按价格分位自动分档——写剧情这种费脑子的事交给强模型，日常闲聊用便宜模型。\n\n【隐私与其他】\n· 可选端侧内容审核（Qwen3Guard 0.6B），推理全部在本机完成、不上传内容，不用可以一直不开。\n· 只在调用你自配的模型接口时联网，没有埋点、不收集任何数据。\n· 与 Windows 桌面端存档互通：可导出 *.kith.json 互导，或在同一 Wi-Fi 下局域网直传。\n· 需要 Android 12（API 31）及以上系统。",
-        "versionName": "1.1.0",
-        "versionCode": 1261002,
-        "size": "112.3 MB",
-        "developer": "wan101218",
-        "downloadUrl": "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-v1.1.0.apk",
-        "screenshots": [
-          "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-shot-1.jpg",
-          "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-shot-2.jpg",
-          "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-shot-3.jpg",
-          "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-shot-4.jpg"
-        ],
-        "changelog": "首个上架版本。设定世界观与初始人物，看 AI 角色自己把社会跑起来；支持群聊互动、附身 NPC、关系图谱、模型自动分档，以及与 Windows 桌面端存档互通。",
-        "forceUpdate": false,
-        "featured": false,
-        "status": "published",
-        "sortOrder": 0
-      }
-    },
-    {
-      "action": "create-banner",
-      "payload": {
-        "title": "Kith",
-        "subtitle": "造一个社会，看它自己活起来",
-        "badge": "新应用",
-        "image": "https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-banner.jpg",
-        "appId": 0,
-        "sortOrder": 0,
-        "enabled": true
-      }
-    },
-    {
-      "action": "list"
-    }
-  ]
+  "triggeredAt": "2026-10-02T14:01:41.769Z",
+  "publicOnly": true,
+  "note": "只读验证：确认 Kith 转正后前台可见"
 }
