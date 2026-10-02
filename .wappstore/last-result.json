@@ -1,45 +1,8 @@
 {
-  "startedAt": "2026-10-02T13:59:48.195Z",
+  "startedAt": "2026-10-02T14:01:53.069Z",
   "api": "https://wappstore.wpr101218.workers.dev",
   "dryRun": false,
-  "jobs": [
-    {
-      "action": "publish-app",
-      "ok": true,
-      "status": 200,
-      "response": {
-        "ok": true,
-        "message": "应用已创建",
-        "id": 1,
-        "warning": "",
-        "scope": "ai"
-      },
-      "appId": 1
-    },
-    {
-      "action": "create-banner",
-      "ok": true,
-      "status": 200,
-      "response": {
-        "ok": true,
-        "message": "宣传位已创建",
-        "id": 1
-      },
-      "bannerId": 1
-    },
-    {
-      "action": "list",
-      "ok": true,
-      "apps": [],
-      "banners": [
-        {
-          "id": 1,
-          "title": "Kith",
-          "enabled": 1
-        }
-      ]
-    }
-  ],
+  "jobs": [],
   "ok": true,
   "siteConfig": {
     "ok": true,
@@ -73,13 +36,26 @@
   },
   "publicData": {
     "appsHttp": 200,
-    "appsRaw": "{\"ok\":true,\"apps\":[]}",
-    "appCount": 0,
-    "apps": [],
+    "appsRaw": "{\"ok\":true,\"apps\":[{\"id\":1,\"name\":\"Kith\",\"packageName\":\"com.kith.app\",\"icon\":\"https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-icon-512.png\",\"category\":\"应用\",\"summary\"",
+    "appCount": 1,
+    "apps": [
+      {
+        "id": 1,
+        "name": "Kith",
+        "pkg": "com.kith.app",
+        "v": "1.1.0",
+        "code": 1261002
+      }
+    ],
     "bannersHttp": 200,
-    "bannersRaw": "{\"ok\":true,\"banners\":[]}",
-    "bannerCount": 0,
-    "banners": []
+    "bannersRaw": "{\"ok\":true,\"banners\":[{\"id\":1,\"title\":\"Kith\",\"subtitle\":\"造一个社会，看它自己活起来\",\"badge\":\"新应用\",\"image\":\"https://github.com/wan101218/wappstore-releases/releases/download/kith-v1.1.0/kith-banner.jpg\",\"link\":\"\",",
+    "bannerCount": 1,
+    "banners": [
+      {
+        "id": 1,
+        "title": "Kith"
+      }
+    ]
   },
   "passwordDiag": {
     "length": 16,
@@ -181,6 +157,6 @@
   "matchedCredential": "admin + .publish.env 密码",
   "login": "ok",
   "loginUser": "admin",
-  "jobTriggeredAt": "2026-10-02T13:59:35.260Z",
-  "finishedAt": "2026-10-02T13:59:54.971Z"
+  "jobTriggeredAt": "2026-10-02T14:01:41.769Z",
+  "finishedAt": "2026-10-02T14:01:58.844Z"
 }
