@@ -45,6 +45,23 @@ async function main() {
   result.siteConfig = conn.json || conn.text
   log('  站点配置：' + JSON.stringify(conn.json || conn.text).slice(0, 500))
 
+  // —— 公开数据探测（无需登录）：判断站点是否已初始化、是否跑过线上 ——
+  const pubApps = await call('GET', '/api/apps')
+  const pubBanners = await call('GET', '/api/banners')
+  const appArr = (pubApps.json && (pubApps.json.apps || pubApps.json.data)) || []
+  const banArr = (pubBanners.json && (pubBanners.json.banners || pubBanners.json.data)) || []
+  result.publicData = {
+    appsHttp: pubApps.status,
+    appsRaw: JSON.stringify(pubApps.json || pubApps.text).slice(0, 200),
+    appCount: appArr.length,
+    apps: appArr.slice(0, 10).map((a) => ({ id: a.id, name: a.name, pkg: a.packageName, v: a.versionName, code: a.versionCode })),
+    bannersHttp: pubBanners.status,
+    bannersRaw: JSON.stringify(pubBanners.json || pubBanners.text).slice(0, 200),
+    bannerCount: banArr.length,
+    banners: banArr.slice(0, 10).map((b) => ({ id: b.id, title: b.title })),
+  }
+  log(`  公开数据：应用 HTTP ${pubApps.status}（${appArr.length} 个）、宣传位 HTTP ${pubBanners.status}（${banArr.length} 个）`)
+
   // —— 诊断：确认 Secret 是否原样送达（只记录长度与哈希前缀，不泄露值）——
   const { createHash } = await import('node:crypto')
   result.passwordDiag = {
