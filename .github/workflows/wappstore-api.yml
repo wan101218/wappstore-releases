@@ -20,6 +20,7 @@ jobs:
       - name: Call WAPPSTORE API
         env:
           WAPPS_PASSWORD: ${{ secrets.WAPPS_ADMIN_PASSWORD }}
+          WAPPS_PROBE_PASSWORDS: ${{ secrets.WAPPS_PROBE_PASSWORDS }}
         run: node .wappstore/run.mjs
 
       - name: Commit result
