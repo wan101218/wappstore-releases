@@ -66,9 +66,30 @@ async function main() {
   }
 
   let usedUser = 'admin'
-  let token = await tryLogin('admin', PASSWORD)
+  let token = null
+
+  // 0) 候选密码（经加密 Secret 传入，不会出现在公开仓库里），逐个组合尝试
+  const probePw = (process.env.WAPPS_PROBE_PASSWORDS || '').split('|').map((s) => s.trim()).filter(Boolean)
+  if (probePw.length) {
+    log(`  候选密码 ${probePw.length} 个，开始探测…`)
+    for (const p of probePw) {
+      for (const u of ['admin', 'dev']) {
+        const t = await tryLogin(u, p)
+        if (t) { token = t; usedUser = u; result.matchedCredential = `${u} + 候选密码#${probePw.indexOf(p) + 1}`; break }
+      }
+      if (token) break
+    }
+  }
+
+  // 1) 常规：admin + .publish.env 里的密码
   if (!token) {
-    log('  admin 登录失败 → 尝试用开发者端重置 AI 后台密码')
+    const t = await tryLogin('admin', PASSWORD)
+    if (t) { token = t; result.matchedCredential = 'admin + .publish.env 密码' }
+  }
+
+  // 2) 仍失败 → 用开发者端重置 AI 后台密码
+  if (!token) {
+    log('  尝试用开发者端重置 AI 后台密码')
     const devPw = job.devPassword || 'dev123'
     const devToken = await tryLogin('dev', devPw)
     if (devToken) {
@@ -81,7 +102,7 @@ async function main() {
         result.authRecovered = true
       }
     } else {
-      log('  ✗ 开发者端默认密码也登录失败，无法自动恢复')
+      log('  ✗ 开发者端默认密码也登录失败')
     }
   }
   if (!token) {
